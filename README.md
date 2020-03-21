@@ -1,5 +1,8 @@
 # PIFu: Pixel-Aligned Implicit Function for High-Resolution Clothed Human Digitization
 
+News:
+* \[2020/02/26\] License is updated to MIT license! Enjoy!
+
 This repository contains a pytorch implementation of "[PIFu: Pixel-Aligned Implicit Function for High-Resolution Clothed Human Digitization](https://arxiv.org/abs/1905.05172)".
 
 [Project Page](https://shunsukesaito.github.io/PIFu/)
@@ -17,6 +20,7 @@ year = {2019}
 }
 ```
 
+
 This codebase provides: 
 - test code
 - training code
@@ -29,15 +33,44 @@ This codebase provides:
 - PIL
 - skimage
 - tqdm
+- numpy
+- cv2
 
 for training and data generation
 - [trimesh](https://trimsh.org/) with [pyembree](https://github.com/scopatz/pyembree)
-- cv2
 - [pyexr](https://github.com/tvogels/pyexr)
 - PyOpenGL
 - freeglut (use `sudo apt-get install freeglut3-dev` for ubuntu users)
 
+## Windows demo installation instuction
+
+- Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+- Add `conda` to PATH
+- Install [git bash](https://git-scm.com/downloads)
+- Launch `Git\bin\bash.exe`
+- `eval "$(conda shell.bash hook)"` then `conda activate my_env` because of [this](https://github.com/conda/conda-build/issues/3371)
+- Automatic `env create -f environment.yml` (look [this](https://github.com/conda/conda/issues/3417))
+- OR manually setup [environment](https://towardsdatascience.com/a-guide-to-conda-environments-bc6180fc533)
+    - `conda create —name pifu python` where `pifu` is name of your environment
+    - `conda activate`
+    - `conda install pytorch torchvision cudatoolkit=10.1 -c pytorch`
+    - `conda install pillow`
+    - `conda install scikit-image`
+    - `conda install tqdm`
+    - `conda install -c menpo opencv`
+- Download [wget.exe](https://eternallybored.org/misc/wget/)
+- Place it into `Git\mingw64\bin`
+- `sh ./scripts/download_trained_model.sh`
+- Remove background from your image ([this](https://www.remove.bg/), for example)
+- Create black-white mask .png
+- Replace original from sample_images/
+- Try it out - `sh ./scripts/test.sh`
+- Download [Meshlab](http://www.meshlab.net/) because of [this](https://github.com/shunsukesaito/PIFu/issues/1)
+- Open .obj file in Meshlab
+
+
 ## Demo
+Warning: The released model is trained with mostly upright standing scans with weak perspectie projection and the pitch angle of 0 degree. Reconstruction quality may degrade for images highly deviated from trainining data.
 1. run the following script to download the pretrained models from the following link and copy them under `./PIFu/checkpoints/`.
 ```
 sh ./scripts/download_trained_model.sh
@@ -77,3 +110,33 @@ python -m apps.train_shape --dataroot {path_to_training_data} --random_flip --ra
 ```
 python -m apps.train_color --dataroot {path_to_training_data} --num_sample_inout 0 --num_sample_color 5000 --sigma 0.1 --random_flip --random_scale --random_trans
 ```
+
+## Related Research
+
+[Multi-Level Pixel-Aligned Implicit Function for High-Resolution 3D Human Digitization (CVPR 2020)](https://shunsukesaito.github.io/PIFu/)  
+Shunsuke Saito, Tomas Simon, Jason Saragih, Hanbyul Joo
+
+We further improve the quality of reconstruction by leveraging multi-level approach! 
+
+[Learning to Infer Implicit Surfaces without 3d Supervision (NeurIPS 2019)](http://papers.nips.cc/paper/9039-learning-to-infer-implicit-surfaces-without-3d-supervision.pdf)  
+Shichen Liu, Shunsuke Saito, Weikai Chen, Hao Li
+
+We answer to the question of "how can we learn implicit function if we don't have 3D ground truth?"
+
+[SiCloPe: Silhouette-Based Clothed People (CVPR 2019, best paper finalist)](https://arxiv.org/pdf/1901.00049.pdf)  
+Ryota Natsume*, Shunsuke Saito*, Zeng Huang, Weikai Chen, Chongyang Ma, Hao Li, Shigeo Morishima (*-equal contribution)
+
+Our first attempt to reconstruct 3D clothed human body with texture from a single image!
+
+[Deep Volumetric Video from Very Sparse Multi-view Performance Capture (ECCV 2018)](http://openaccess.thecvf.com/content_ECCV_2018/papers/Zeng_Huang_Deep_Volumetric_Video_ECCV_2018_paper.pdf)  
+Zeng Huang, Tianye Li, Weikai Chen, Yajie Zhao, Jun Xing, Chloe LeGendre, Linjie Luo, Chongyang Ma, Hao Li
+
+Implict surface learning for sparse view human performance capture!
+
+------
+
+
+
+For commercial queries, please contact:
+
+Hao Li: hao@hao-li.com ccto: saitos@usc.edu Baker!!
